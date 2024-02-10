@@ -1,0 +1,31 @@
+# Chimpansky files
+*.Xc
+#*.pdf
+*.ods
+*.ods#
+#*.txt
+*.png
+test.c
+test_list.c
+test_buffer.c
+test_free.c
+test_quotes.c
+tester_errors.sh
+# IDE
+.vscode
+
+#folders:
+minishell_tester/
+
+# binaries
+*.o
+*.a
+*.out
+philosophers
+
+
+# generated
+tests/tests_output/*
+
+# debug syms
+.nfs*
