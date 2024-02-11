@@ -1,1 +1,1 @@
--I./libft/include
+IFLAGS = -I libft/include -I include
