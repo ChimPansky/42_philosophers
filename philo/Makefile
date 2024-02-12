@@ -8,13 +8,14 @@ LIBFT = $(LIBFT_DIR)/libft.a
 #IFLAGS = -I $(LIBFT_DIR)/include -I include
 SOURCE_DIR = .
 OBJ_DIR = objs
-PH_HEADER = $(NAME).h
+PH_HEADERS = $(NAME).h ph_messages.h
 
 include $(LIBFT_DIR)/colors.mk
 
 PH_FILENAMES = \
 	philo \
-	utils
+	utils \
+	error_handling
 
 MS_FILENAMES += \
 
@@ -33,7 +34,7 @@ $(LIBFT):
 lft:
 	@make -C $(LIBFT_DIR) all clean
 
-$(OBJ_DIR)/%.o : %.c $(PH_HEADER)
+$(OBJ_DIR)/%.o : %.c $(PH_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:

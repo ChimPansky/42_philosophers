@@ -3,11 +3,11 @@
 // checks if str can be converted to int and if yes,
 // stores the conversion in target
 // returns SUCCESS/FAILURE
-int	convert_str_to_int(char *str_to_convert, int *target)
-{
+// int	convert_str_to_int(char *str_to_convert, int *target)
+// {
 
-	return (SUCCESS);
-}
+// 	return (SUCCESS);
+// }
 
 size_t	ft_strlen(const char	*s)
 {
