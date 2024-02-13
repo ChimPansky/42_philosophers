@@ -1,19 +1,24 @@
+include colors.mk
+
 NAME = philo
 CC = cc
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
 CFLAGS += -g #-Og -fsanitize=address,undefined,leak
-LIBFT_DIR = libft
-LIBFT = $(LIBFT_DIR)/libft.a
+LFLAGS = -L$(LIB_ATOMIC_DIR) -l_atomic
+LIB_ATOMIC_DIR = lib_atomic
+LIB_ATOMIC = $(LIB_ATOMIC_DIR)/lib_atomic.a
 #IFLAGS = -I include
 #IFLAGS = -I $(LIBFT_DIR)/include -I include
 SOURCE_DIR = .
 OBJ_DIR = objs
 PH_HEADERS = $(NAME).h ph_messages.h
 
-include $(LIBFT_DIR)/colors.mk
-
 PH_FILENAMES = \
 	philo \
+	simulation \
+	routine \
+	monitoring \
+	time \
 	utils \
 	error_handling
 
@@ -24,15 +29,14 @@ OBJ = $(addsuffix .o, $(addprefix $(OBJ_DIR)/,$(PH_FILENAMES)))
 
 all: $(NAME)
 
-$(NAME): $(OBJ) $(LIBFT)
-	$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME): $(OBJ) $(LIB_ATOMIC)
+	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LFLAGS)
 	@echo "$(GREEN)Executable $(NAME) created!$(DEF_COLOR)"
 
-$(LIBFT):
-	@make -C $(LIBFT_DIR) all clean
+$(LIB_ATOMIC):
+	@make -C $(LIB_ATOMIC_DIR) all clean
 
-lft:
-	@make -C $(LIBFT_DIR) all clean
+lib_atomic: $(LIB_ATOMIC)
 
 $(OBJ_DIR)/%.o : %.c $(PH_HEADERS)
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -51,4 +55,4 @@ test: $(NAME)
 valgrind:
 	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all --track-fds=all ./$(NAME)
 
-.PHONY: all bonus clean fclean re test lft
+.PHONY: all bonus clean fclean re test
