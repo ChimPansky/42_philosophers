@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/14 12:53:01 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/14 15:04:03 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <errno.h>
 # include "lib_atomic/lib_atomic.h"
 # include "ph_messages.h"
+
+# include "fcntl.h"	//TODO: remove
 
 # define SUCCESS 0
 # define FAILURE !SUCCESS
@@ -46,6 +48,8 @@ typedef struct	s_simulation
 	pthread_mutex_t		logging_guard;
 	pthread_mutex_t		*fork_guards;
 
+	int				log_fd; //TODO: remove
+
 }				t_simulation;
 
 typedef struct	s_philo{
@@ -59,6 +63,9 @@ typedef struct	s_philo{
 
 // philo.c
 int		main(int argc, char **argv);
+
+// args_validation.c
+int		read_args_into_sim(t_simulation *sim, int argc, char **argv);
 
 // sim.c
 int		run_simulation(t_simulation *sim);
@@ -77,7 +84,10 @@ long	get_current_time_ms(void);
 long	get_current_sim_time(t_simulation *sim);
 
 // utils.c
+int		ft_atoi(char *string);
+long	ft_atol(char *string);
 void	ft_putstr_fd(char *s, int fd);
+bool	ft_str_isnum(char *string);
 int		convert_str_to_int(char *str_to_convert, int *target);
 
 // error_handling.c

@@ -8,8 +8,74 @@
 
 // 	return (SUCCESS);
 // }
+#include <limits.h>
 
-size_t	ft_strlen(const char	*s)
+long	ft_atol(char *string)
+{
+	unsigned long	result;
+	int				sign_multiplier;
+
+	result = 0;
+	sign_multiplier = 1;
+	while ((*string == 32 || (*string >= 9 && *string <= 13)))
+		string++;
+	if (*string == '-' || *string == '+')
+	{
+		if (*string == '-')
+			sign_multiplier = -1;
+		string++;
+	}
+	while (*string >= '0' && *string <= '9')
+	{
+		result = result * 10 + *string - '0';
+		string++;
+	}
+	if (sign_multiplier == -1 && result == (LONG_MAX + 1lu))
+		return (LONG_MIN);
+	return ((long)result * sign_multiplier);
+}
+
+int		ft_atoi(char *string)
+{
+	unsigned int	result;
+	int				sign_multiplier;
+
+	result = 0;
+	sign_multiplier = 1;
+	while ((*string == 32 || (*string >= 9 && *string <= 13)))
+		string++;
+	if (*string == '-' || *string == '+')
+	{
+		if (*string == '-')
+			sign_multiplier = -1;
+		string++;
+	}
+	while (*string >= '0' && *string <= '9')
+	{
+		result = result * 10 + *string - '0';
+		string++;
+	}
+	if (sign_multiplier == -1 && result == (INT_MAX + 1u))
+		return (INT_MIN);
+	return ((int)result * sign_multiplier);
+}
+
+bool	ft_str_isnum(char *string)
+{
+	if (*string == '-' || *string == '+')
+		string++;
+	if (!*string)
+		return (false);
+	while (*string)
+	{
+		if (*string < '0' || *string > '9')
+			return (false);
+		string++;
+	}
+	return (true);
+}
+
+size_t	ft_strlen(const char *s)
 {
 	size_t	len;
 

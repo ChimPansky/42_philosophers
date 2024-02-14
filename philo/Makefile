@@ -15,6 +15,7 @@ PH_HEADERS = $(NAME).h ph_messages.h
 
 PH_FILENAMES = \
 	philo \
+	args_validation \
 	simulation \
 	routine \
 	monitoring \
