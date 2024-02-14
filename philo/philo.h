@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/13 18:14:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/14 12:53:01 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ typedef struct	s_simulation
 	long				time_to_eat;
 	long				time_to_sleep;
 	int					number_of_times_each_philosopher_must_eat;
-	//t_ft_atomic_bool	all_are_alive;
-	//t_ft_atomic_bool	all_had_enough_meals;
-	bool				all_are_alive;
-	bool				all_had_enough_meals;
+	t_ft_atomic_bool	all_are_alive;
+	t_ft_atomic_bool	all_had_enough_meals;
+	//bool				all_are_alive;
+	//bool				all_had_enough_meals;
 
 	pthread_mutex_t		logging_guard;
 	pthread_mutex_t		*fork_guards;
@@ -62,8 +62,8 @@ int		main(int argc, char **argv);
 
 // sim.c
 int		run_simulation(t_simulation *sim);
-void	print_log_message(pthread_mutex_t *mx_logging,
-	char *log_event, long timestamp, int philo_nr);
+bool	print_log_message(t_simulation *sim, char *log_event,
+		long timestamp, int philo_nr);
 bool	simulation_end(t_simulation *sim);
 
 // routine.c

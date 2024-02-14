@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:06:03 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/13 18:00:34 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/14 11:48:59 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,11 @@ static int	init_simulation(t_simulation **sim)
 	(*sim)->time_to_eat = 0;
 	(*sim)->time_to_sleep = 0;
 	(*sim)->number_of_times_each_philosopher_must_eat = -1;
-	(*sim)->all_are_alive = true;
-	(*sim)->all_had_enough_meals = false;
-	//& ft_atomic_bool_init(&(*sim)->all_had_enough_meals, false)
-		//& ft_atomic_bool_init(&(*sim)->all_are_alive, true)) != SUCCESS)
-	if (pthread_mutex_init(&(*sim)->logging_guard, NULL) != SUCCESS)
+	//(*sim)->all_are_alive = true;
+	//(*sim)->all_had_enough_meals = false;
+	if ((ft_atomic_bool_init(&(*sim)->all_had_enough_meals, false)
+		& ft_atomic_bool_init(&(*sim)->all_are_alive, true)
+		& pthread_mutex_init(&(*sim)->logging_guard, NULL)) != SUCCESS)
 		return (ph_perror(ERRNO_MUTEX, "init_simulation"),
 			destroy_simulation(sim), FAILURE);
 	(*sim)->start_time = get_current_time_ms();
