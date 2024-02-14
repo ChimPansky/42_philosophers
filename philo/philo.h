@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/14 15:04:03 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/14 18:03:13 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@
 # define FAILURE !SUCCESS
 # define USEC_MULTIPLIER 1000
 
-
+// 0-100%	: duration of time to think
+// 0%		: no duration
+// 100%		: max duration
+# define THOUGHT_INTENSITY 20
 
 typedef struct	s_simulation
 {
@@ -42,14 +45,9 @@ typedef struct	s_simulation
 	int					number_of_times_each_philosopher_must_eat;
 	t_ft_atomic_bool	all_are_alive;
 	t_ft_atomic_bool	all_had_enough_meals;
-	//bool				all_are_alive;
-	//bool				all_had_enough_meals;
-
 	pthread_mutex_t		logging_guard;
 	pthread_mutex_t		*fork_guards;
-
 	int				log_fd; //TODO: remove
-
 }				t_simulation;
 
 typedef struct	s_philo{
@@ -88,7 +86,6 @@ int		ft_atoi(char *string);
 long	ft_atol(char *string);
 void	ft_putstr_fd(char *s, int fd);
 bool	ft_str_isnum(char *string);
-int		convert_str_to_int(char *str_to_convert, int *target);
 
 // error_handling.c
 int		ph_perror(int error_nr, char *error_info);

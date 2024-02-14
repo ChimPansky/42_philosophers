@@ -75,7 +75,7 @@ bool	ft_str_isnum(char *string)
 	return (true);
 }
 
-size_t	ft_strlen(const char *s)
+static size_t	ft_strlen(const char *s)
 {
 	size_t	len;
 
@@ -90,19 +90,4 @@ void	ft_putstr_fd(char *s, int fd)
 	if (!s)
 		return ;
 	write(fd, s, ft_strlen(s));
-}
-
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
-{
-	size_t	i;
-
-	i = 0;
-	while (*(src + i) && size && i < size - 1)
-	{
-		*(dst + i) = *(src + i);
-		i++;
-	}
-	if (size)
-		*(dst + i) = '\0';
-	return (ft_strlen(src));
 }
