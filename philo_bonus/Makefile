@@ -67,7 +67,7 @@ test4: $(NAME)	# all live
 test5: $(NAME)	# some1 dies
 	./$(NAME) 4 310 200 200
 
-kill_all: $(NAME)
+kill_all:
 	pgrep -f $(NAME) | xargs kill
 
 

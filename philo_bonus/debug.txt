@@ -1,112 +1,36 @@
 PARENT: STARTING PHILO_PROCESSES
 PARENT: STARTING PHILO_PROCESSES
 PARENT: STARTING PHILO_PROCESSES
+PARENT: STARTING PHILO_PROCESSES
 CHILD NO 0: STARTING EAT/SLEEP/THINK
 CHILD NO 1: STARTING EAT/SLEEP/THINK
-PARENT: STARTING PHILO_PROCESSES
 CHILD NO 2: STARTING EAT/SLEEP/THINK
-PARENT_MONITOR: WAITING FOR SIM_END
-PARENT: STARTING PHILO_PROCESSES
 CHILD NO 3: STARTING EAT/SLEEP/THINK
-CHILD NO 4: STARTING EAT/SLEEP/THINK
-0 P1 is eating
-0 P2 is eating
-200 P1 is sleeping
-200 P2 is sleeping
-200 P3 is eating
-200 P4 is eating
-400 P1 is thinking
-400 P2 is thinking
-400 P5 is eating
-400 P3 is sleeping
-400 P4 is sleeping
-400 P1 is eating
-600 P3 is thinking
-600 P5 is sleeping
-600 P2 is eating
-600 P4 is thinking
-600 P1 is sleeping
-600 P3 is eating
-800 P5 is thinking
-800 P2 is sleeping
-800 P4 is eating
-800 P5 is eating
-800 P1 is thinking
-800 P3 is sleeping
-1000 P2 is thinking
-1000 P4 is sleeping
-1000 P5 is sleeping
-1000 P1 is eating
-1000 P3 is thinking
-1000 P2 is eating
-1200 P4 is thinking
-1200 P5 is thinking
-1200 P1 is sleeping
-1200 P3 is eating
-1200 P2 is sleeping
-1200 P4 is eating
-1401 P1 is thinking
-1401 P3 is sleeping
-1401 P4 is sleeping
-1401 P2 is thinking
-1401 P5 is eating
-1401 P1 is eating
-1601 P3 is thinking
-1601 P4 is thinking
-1601 P5 is sleeping
-1601 P2 is eating
-1601 P1 is sleeping
-1601 P3 is eating
-1801 P5 is thinking
-1801 P2 is sleeping
-1801 P4 is eating
-1801 P1 is thinking
-1801 P3 is sleeping
-1801 P5 is eating
-2001 P2 is thinking
-2001 P4 is sleeping
-2001 P1 is eating
-2001 P3 is thinking
-2001 P5 is sleeping
-2001 P2 is eating
-2201 P4 is thinking
-2201 P1 is sleeping
-2201 P3 is eating
-2201 P5 is thinking
-2201 P2 is sleeping
-2201 P4 is eating
-2401 P1 is thinking
-2401 P2 is thinking
-2401 P3 is sleeping
-2401 P2 is eating
-2401 P4 is sleeping
-2401 P5 is eating
-2601 P3 is thinking
-2601 P4 is thinking
-2601 P5 is sleeping
-2601 P2 is sleeping
-2601 P1 is eating
-2601 P3 is eating
-2801 P5 is thinking
-2801 P2 is thinking
-2801 P1 is sleeping
-2801 P4 is eating
-2801 P3 is sleeping
-2802 P5 is eating
-3002 P1 is thinking
-3002 P1 is eating
-3002 P5 is sleeping
-3002 P4 is sleeping
-3002 P2 is eating
-3002 P3 is thinking
-CHILD: P1 HAD ENOUGH TO EAT
-3202 P3 is eating
-3202 P4 is thinking
-3202 P5 is thinking
-CHILD: P2 HAD ENOUGH TO EAT
-3202 P5 is eating
-CHILD: P3 HAD ENOUGH TO EAT
-3402 P4 is eating
-CHILD: P5 HAD ENOUGH TO EAT
-CHILD: P4 HAD ENOUGH TO EAT
-3802 P2 died
+45 P1 has taken a fork
+55 P1 has taken a fork
+CHILD: P1; TIME SINCE BOF_LAST_MEAL: 56
+55 P1 is eating
+CHILD: P1; TIME OF BOF_LAST_MEAL: 55
+47 P3 has taken a fork
+PARENT_MONITOR: WAITING FOR SIM_END
+PARENT: WAITING FOR PHILO_PROCESSES...
+46 P2 has taken a fork
+258 P3 has taken a fork
+258 P2 has taken a fork
+CHILD: P3; TIME SINCE BOF_LAST_MEAL: 258
+258 P3 is eating
+CHILD: P3; TIME OF BOF_LAST_MEAL: 258
+CHILD: P2; TIME SINCE BOF_LAST_MEAL: 259
+258 P2 is eating
+CHILD: P2; TIME OF BOF_LAST_MEAL: 258
+258 P1 is sleeping
+310 P4 died
+PARENT_MONITOR: SIM_END HAS BEEN TRIGGERED - CHECK IF ALL HAD ENOUGH AND IF NOT THEN KILL OTHERS...
+PARENT: KILLING CHILD NO 0; PID 43676
+PARENT: KILLING CHILD NO 1; PID 43677
+PARENT: KILLING CHILD NO 2; PID 43678
+PARENT: KILLING CHILD NO 3; PID 43679
+PARENT: WAITING FOR PHILO_PROCESSES...
+PARENT: WAITING FOR PHILO_PROCESSES...
+PARENT: WAITING FOR PHILO_PROCESSES...
+PARENT: LAST PHILO FINISHED - ALL HAD ENOUGH!

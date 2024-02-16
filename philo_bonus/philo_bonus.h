@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/16 19:06:53 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/16 22:41:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,12 +72,14 @@ typedef struct	s_simulation
 	long	start_time;
 	t_ft_atomic_long	time_of_beginning_of_last_meal;
 	int		number_of_meals_eaten;
+	bool	philo_had_enough;
 	bool	all_had_enough_meals;
 	int				log_fd; //TODO: remove
 }				t_simulation;
 
 // philo.c
 int		main(int argc, char **argv);
+void	destroy_sim(t_simulation *sim);
 
 // args_validation.c
 int		read_args_into_sim(t_simulation *sim, int argc, char **argv);
