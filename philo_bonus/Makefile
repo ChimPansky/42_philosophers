@@ -1,9 +1,9 @@
 include colors.mk
 
-NAME = philo
-CC = clang	# TODO: change this to cc
+NAME = philo_bonus
+CC = cc	# TODO: change this to cc
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
-CFLAGS += -g -Og -fsanitize=thread #-fsanitize=address,undefined,leak
+CFLAGS += -g #-Og #-fsanitize=thread #-fsanitize=address,undefined,leak
 #CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LFLAGS = -L$(LIB_ATOMIC_DIR) -l_atomic
 LIB_ATOMIC_DIR = lib_atomic
@@ -15,11 +15,10 @@ OBJ_DIR = objs
 PH_HEADERS = $(NAME).h ph_messages.h
 
 PH_FILENAMES = \
-	philo \
+	philo_bonus \
 	args_validation \
-	simulation \
-	routine \
-	monitoring \
+	parent_level \
+	child_level \
 	time \
 	utils \
 	error_handling
@@ -30,6 +29,8 @@ SRC = $(addsuffix .c, $(addprefix $(SOURCE_DIR)/,$(PH_FILENAMES)))
 OBJ = $(addsuffix .o, $(addprefix $(OBJ_DIR)/,$(PH_FILENAMES)))
 
 all: $(NAME)
+
+bonus: all
 
 $(NAME): $(OBJ) $(LIB_ATOMIC)
 	$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LFLAGS)
@@ -65,6 +66,10 @@ test4: $(NAME)	# all live
 
 test5: $(NAME)	# some1 dies
 	./$(NAME) 4 310 200 200
+
+kill_all: $(NAME)
+	pgrep -f $(NAME) | xargs kill
+
 
 valgrind:
 	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all --track-fds=all ./$(NAME)

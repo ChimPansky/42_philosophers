@@ -6,13 +6,13 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:06:03 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/14 15:50:27 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/16 11:17:50 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-static void	destroy_forks(t_simulation *sim)
+static void	destroy_forks(t_simulation *sim) // TODO: destroy atomics?
 {
 	int	i;
 
