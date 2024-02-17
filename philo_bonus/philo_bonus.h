@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/16 22:41:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/17 10:24:43 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@
 # define LOG_DYING "died"
 
 # define SEM_FORKS "forks_on_the_table"
+# define SEM_EVEN_START "even_start"
+# define SEM_ODD_START "odd_start"
 # define SEM_LOGGING "logging_messages"
 # define SEM_SIM_END "simulation_end"
 
@@ -59,21 +61,23 @@ typedef struct	s_philo{		// replace struct with just pid_t if nothing else neede
 
 typedef struct	s_simulation
 {
-	t_philo	*philo_processes;	//just a pointer to an array with the pids
-	sem_t	*fork_sem;
-	sem_t	*logging_sem;
-	sem_t	*sim_end_sem;
-	int		num_philos;
-	int		philo_index;
-	long	time_to_die;
-	long	time_to_eat;
-	long	time_to_sleep;
-	int		number_of_times_each_philosopher_must_eat;
-	long	start_time;
+	t_philo				*philo_processes;	//just a pointer to an array with the pids
+	sem_t				*fork_sem;
+	sem_t				*even_start_sem;
+	sem_t				*odd_start_sem;
+	sem_t				*logging_sem;
+	sem_t				*sim_end_sem;
+	int					num_philos;
+	int					philo_index;
+	long				time_to_die;
+	long				time_to_eat;
+	long				time_to_sleep;
+	int					number_of_times_each_philosopher_must_eat;
+	long				start_time;
 	t_ft_atomic_long	time_of_beginning_of_last_meal;
-	int		number_of_meals_eaten;
-	bool	philo_had_enough;
-	bool	all_had_enough_meals;
+	t_ft_atomic_bool	philo_had_enough;
+	t_ft_atomic_bool	all_had_enough_meals;
+	int					number_of_meals_eaten;
 	int				log_fd; //TODO: remove
 }				t_simulation;
 
@@ -89,8 +93,7 @@ int		run_sim_in_parent(t_simulation *sim);
 bool	simulation_end(t_simulation *sim);
 
 // child_level.c
-bool	print_log_message(t_simulation *sim, char *log_event,
-		long timestamp, bool unlock);
+bool	print_log_message(t_simulation *sim, char *log_event, bool unlock);
 int		eat_sleep_think_in_child(t_simulation *sim);
 
 // routine.c

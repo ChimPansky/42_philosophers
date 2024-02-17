@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 09:22:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/15 09:22:45 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/17 07:56:16 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,11 @@ static size_t	ft_strlen(const char *s)
 
 void	ft_putstr_fd(char *s, int fd)
 {
+	int	bytes_written;
+
+	bytes_written = 0;
 	if (!s)
 		return ;
-	write(fd, s, ft_strlen(s));
+	bytes_written = write(fd, s, ft_strlen(s));
+	(void)bytes_written;
 }

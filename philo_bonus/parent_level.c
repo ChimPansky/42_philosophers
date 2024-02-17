@@ -6,10 +6,11 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:44:34 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/16 22:35:57 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/17 10:44:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "lib_atomic/lib_atomic.h"
 #include "philo_bonus.h"
 
 // pgrep -f philo_bonus | xargs kill 	// TOTO:REMOVE
@@ -52,12 +53,37 @@ static void	*check_for_sim_end(void *sim_void)
 	dprintf(g_log_fd, "PARENT_MONITOR: WAITING FOR SIM_END\n");
 	sem_wait(sim->sim_end_sem);
 	dprintf(g_log_fd, "PARENT_MONITOR: SIM_END HAS BEEN TRIGGERED - CHECK IF ALL HAD ENOUGH AND IF NOT THEN KILL OTHERS...\n");
-	if (!sim->all_had_enough_meals)
+	if (!ft_atomic_bool_load(&sim->all_had_enough_meals))
 		kill_remaining_philos(sim->philo_processes, sim->num_philos);
 	return (NULL);
 }
 
-static int	start_philo_processes(t_simulation *sim, t_philo *philo)
+static void	start_philo_processes(t_simulation *sim)
+{
+	int	i;
+
+	i = 0;
+	while (i < sim->num_philos)
+	{
+		if (i++ % 2 == 0)
+		{
+			sem_post(sim->even_start_sem);
+			//usleep(1);
+		}
+	}
+	i = 0;
+	usleep(50);
+	while (i < sim->num_philos)
+	{
+		if (i++ % 2 == 1)
+		{
+			sem_post(sim->odd_start_sem);
+			//usleep(1);
+		}
+	}
+}
+
+static int	create_philo_processes(t_simulation *sim, t_philo *philo)
 {
 	int	i;
 
@@ -94,7 +120,7 @@ void	wait_philo_processes(t_simulation *sim)
 		waitpid(0, NULL, 0);
 		if (i == sim->num_philos - 1)
 		{
-			sim->all_had_enough_meals = true; // TODO: only true if they have not been killed by signal... (check with WIFEXITED/WIFSIGNALED...)
+			ft_atomic_bool_store(&sim->all_had_enough_meals, true); // TODO: only true if they have not been killed by signal... (check with WIFEXITED/WIFSIGNALED...)
 			dprintf(g_log_fd, "PARENT: LAST PHILO FINISHED - ALL HAD ENOUGH!\n");
 		}
 		i++;
@@ -108,10 +134,11 @@ int	run_sim_in_parent(t_simulation *sim)
 	pthread_t	parent_monitor;
 
 	sim->philo_processes = philo;
-	if (start_philo_processes(sim, philo) != SUCCESS)
+	if (create_philo_processes(sim, philo) != SUCCESS)
 		return (pthread_join(parent_monitor, NULL), FAILURE);
 	if (philo[0].child_pid != 0)
 	{
+		start_philo_processes(sim);
 		if (pthread_create(&parent_monitor, NULL, &check_for_sim_end, (void *)sim) != SUCCESS)
 			return (ph_perror(ERRNO_PTHREAD, "run_sim_in_parent: create monitor"));
 		wait_philo_processes(sim);
