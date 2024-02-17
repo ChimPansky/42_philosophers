@@ -6,79 +6,96 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:22:53 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 10:26:44 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/17 23:03:45 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
+#include "ph_messages.h"
+#include <stdlib.h>
 
-void	destroy_sim(t_simulation *sim)
+
+static void	destroy_semaphores(t_simulation *sim)
 {
 	if (sem_close(sim->fork_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_FORKS);
 	sem_unlink(SEM_FORKS);
-	if (sem_close(sim->even_start_sem) == -1)
-		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_EVEN_START);
-	sem_unlink(SEM_EVEN_START);
+	// if (sem_close(sim->even_start_sem) == -1)
+	// 	ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_EVEN_START);
+	// sem_unlink(SEM_EVEN_START);
 	if (sem_close(sim->odd_start_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_ODD_START);
 	sem_unlink(SEM_ODD_START);
 	if (sem_close(sim->logging_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_LOGGING);
 	sem_unlink(SEM_LOGGING);
+	if (sem_close(sim->sim_start_sem) == -1)
+		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_SIM_START);
+	sem_unlink(SEM_SIM_START);
 	if (sem_close(sim->sim_end_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_SIM_END);
 	sem_unlink(SEM_SIM_END);
-	if (ft_atomic_long_destroy(&sim->time_of_beginning_of_last_meal) == -1)
+}
+
+void	destroy_ft_atomics(t_simulation *sim)
+{
+	if (ft_atomic_long_destroy(&sim->time_of_beginning_of_last_meal)
+		!= SUCCESS)
 		ph_perror(ERRNO_MUTEX_DESTROY, "destroy_simulation: beg_of_last_meal");
-	if (ft_atomic_bool_destroy(&sim->philo_had_enough) == -1)
+	if (ft_atomic_bool_destroy(&sim->philo_had_enough) != SUCCESS)
 		ph_perror(ERRNO_MUTEX_DESTROY, "destroy_simulation: philo_had_enough");
-	if (ft_atomic_bool_destroy(&sim->all_had_enough_meals) == -1)
+	if (ft_atomic_bool_destroy(&sim->all_had_enough_meals) != SUCCESS)
 		ph_perror(ERRNO_MUTEX_DESTROY, "destroy_simulation: all_had_enough_meals");
+}
+
+void	destroy_sim(t_simulation *sim)
+{
+	destroy_semaphores(sim);
+	destroy_ft_atomics(sim);
+}
+
+static int	init_semaphores(t_simulation *sim)
+{
+	sem_unlink(SEM_FORKS);
+	sem_unlink(SEM_LOGGING);
+	sem_unlink(SEM_ODD_START);
+	sem_unlink(SEM_SIM_START);
+	sem_unlink(SEM_SIM_END);
+	sim->fork_sem = sem_open(SEM_FORKS, O_CREAT, 0644, sim->num_philos);
+	// sim->even_start_sem = sem_open(SEM_EVEN_START, O_CREAT, 0644, sim->num_philos / 2);
+	sim->odd_start_sem = sem_open(SEM_ODD_START, O_CREAT, 0644, 0);
+	sim->logging_sem = sem_open(SEM_LOGGING, O_CREAT, 0644, 1);
+	sim->sim_start_sem = sem_open(SEM_SIM_START, O_CREAT, 0644, 0);
+	sim->sim_end_sem = sem_open(SEM_SIM_END, O_CREAT, 0644, 0);
+	if (sim->fork_sem == SEM_FAILED || sim->odd_start_sem == SEM_FAILED
+		|| sim->logging_sem == SEM_FAILED || sim->sim_end_sem == SEM_FAILED)
+		return (FAILURE);
+	return (SUCCESS);
+}
+
+static int	init_ft_atomics(t_simulation *sim)
+{
+	if (ft_atomic_long_init(&sim->time_of_beginning_of_last_meal, 0)
+		!= SUCCESS)
+		return (FAILURE);
+	if (ft_atomic_bool_init(&sim->philo_had_enough, false) != SUCCESS)
+		return (FAILURE);
+	if (ft_atomic_bool_init(&sim->all_had_enough_meals, false) != SUCCESS)
+		return (FAILURE);
+	return (SUCCESS);
 }
 
 static int	init_sim(t_simulation *sim)		// TODO: mb split up into init sems and init atomic...
 {
 	// need to allocate for sems?
-	sem_unlink(SEM_FORKS);
-	sem_unlink(SEM_LOGGING);
-	sem_unlink(SEM_SIM_END);
-	sem_unlink(SEM_EVEN_START);
-	sem_unlink(SEM_ODD_START);
-	sim->fork_sem = sem_open(SEM_FORKS, O_CREAT, 0644, sim->num_philos);
-	if (sim->fork_sem == SEM_FAILED)
-		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation: "SEM_FORKS),
-			destroy_sim(sim), FAILURE);
-	sim->even_start_sem = sem_open(SEM_EVEN_START, O_CREAT, 0644, 0);
-	if (sim->even_start_sem == SEM_FAILED)
-		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation: "SEM_EVEN_START),
-			destroy_sim(sim), FAILURE);
-	sim->odd_start_sem = sem_open(SEM_ODD_START, O_CREAT, 0644, 0);
-	if (sim->odd_start_sem == SEM_FAILED)
-		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation: "SEM_ODD_START),
-			destroy_sim(sim), FAILURE);
-	sim->logging_sem = sem_open(SEM_LOGGING, O_CREAT, 0644, 1);
-	if (sim->logging_sem == SEM_FAILED)
-		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation: "SEM_LOGGING),
-			destroy_sim(sim), FAILURE);
-	sim->sim_end_sem = sem_open(SEM_SIM_END, O_CREAT, 0644, 0);
-	if (sim->sim_end_sem == SEM_FAILED)
-		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation: "SEM_SIM_END),
-			destroy_sim(sim), FAILURE);
-	sim->start_time = get_current_time_ms();// + 200;
-	if (ft_atomic_long_init(&sim->time_of_beginning_of_last_meal, 0) != SUCCESS)
-		return (ph_perror(ERRNO_MUTEX_CREATE, "init_simulation: beg_of_last_meal"),
-			destroy_sim(sim), FAILURE);
 	sim->philo_index = 0;
 	sim->number_of_meals_eaten = 0;
-	if (ft_atomic_bool_init(&sim->philo_had_enough,
-		false) != SUCCESS)
-		return (ph_perror(ERRNO_MUTEX_CREATE, "init_simulation: philo_had_enough"),
-			destroy_sim(sim), FAILURE);
-	if (ft_atomic_bool_init(&sim->all_had_enough_meals,
-		false) != SUCCESS)
-		return (ph_perror(ERRNO_MUTEX_CREATE, "init_simulation: all_had_enough_meals"),
-			destroy_sim(sim), FAILURE);
+	if (init_semaphores(sim) != SUCCESS)
+		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation"), FAILURE);
+	if (init_ft_atomics(sim) != SUCCESS)
+		return (destroy_semaphores(sim), ph_perror(ERRNO_MUTEX_CREATE, "init_simulation"), FAILURE);
+
+	sim->start_time = get_current_time_ms();
 	return (SUCCESS);
 }
 

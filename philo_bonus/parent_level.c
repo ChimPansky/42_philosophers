@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:44:34 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 10:44:34 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/17 23:13:11 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,30 +15,15 @@
 
 // pgrep -f philo_bonus | xargs kill 	// TOTO:REMOVE
 
-
-void print_philos(t_philo *philo, int num_philos)		//TODO: remove
-{
-	int	i;
-
-	dprintf(g_log_fd, "HERE ARE THE PHILOS:\n");
-	i = 0;
-	while (i < num_philos)
-	{
-		dprintf(g_log_fd, "PHILO NO %d: PID %d\n", i, philo[i].child_pid);
-		i++;
-	}
-	dprintf(g_log_fd, "\n");
-}
-
-static void	kill_remaining_philos(t_philo *philo_processes, int num_philos)
+static void	kill_remaining_philos(pid_t *philo_pids, int num_philos)
 {
 	int	i;
 
 	i = 0;
 	while (i < num_philos)
 	{
-		dprintf(g_log_fd, "PARENT: KILLING CHILD NO %d; PID %d\n", i, philo_processes[i].child_pid);
-		kill(philo_processes[i++].child_pid, SIGKILL);
+		dprintf(g_log_fd, "PARENT: KILLING CHILD NO %d; PID %d\n", i, philo_pids[i]);
+		kill(philo_pids[i++], SIGKILL);
 	}
 		// catch error?
 		// what if u send kill signal to a dead process? i think it's fine
@@ -54,36 +39,11 @@ static void	*check_for_sim_end(void *sim_void)
 	sem_wait(sim->sim_end_sem);
 	dprintf(g_log_fd, "PARENT_MONITOR: SIM_END HAS BEEN TRIGGERED - CHECK IF ALL HAD ENOUGH AND IF NOT THEN KILL OTHERS...\n");
 	if (!ft_atomic_bool_load(&sim->all_had_enough_meals))
-		kill_remaining_philos(sim->philo_processes, sim->num_philos);
+		kill_remaining_philos(sim->philo_pids, sim->num_philos);
 	return (NULL);
 }
 
-static void	start_philo_processes(t_simulation *sim)
-{
-	int	i;
-
-	i = 0;
-	while (i < sim->num_philos)
-	{
-		if (i++ % 2 == 0)
-		{
-			sem_post(sim->even_start_sem);
-			//usleep(1);
-		}
-	}
-	i = 0;
-	usleep(50);
-	while (i < sim->num_philos)
-	{
-		if (i++ % 2 == 1)
-		{
-			sem_post(sim->odd_start_sem);
-			//usleep(1);
-		}
-	}
-}
-
-static int	create_philo_processes(t_simulation *sim, t_philo *philo)
+static int	create_philo_processes(t_simulation *sim)
 {
 	int	i;
 
@@ -91,13 +51,13 @@ static int	create_philo_processes(t_simulation *sim, t_philo *philo)
 	while (i < sim->num_philos)
 	{
 		dprintf(g_log_fd, "PARENT: STARTING PHILO_PROCESSES\n");
-		philo[i].child_pid = fork();
-		if (philo[i].child_pid == -1)
+		sim->philo_pids[i] = fork();
+		if (sim->philo_pids[i] == -1)
 		{
-			kill_remaining_philos(philo, i);
+			kill_remaining_philos(sim->philo_pids, i);
 			return (ph_perror(ERRNO_FORK, "create_philo_processes"), FAILURE);
 		}
-		if (philo[i].child_pid == 0)
+		if (sim->philo_pids[i] == 0)
 		{
 			dprintf(g_log_fd, "CHILD NO %d: STARTING EAT/SLEEP/THINK\n", i);
 			eat_sleep_think_in_child(sim);
@@ -128,15 +88,24 @@ void	wait_philo_processes(t_simulation *sim)
 	sem_post(sim->sim_end_sem);
 }
 
+static void	start_philo_processes(t_simulation *sim)
+{
+	int	i;
+
+	i = 0;
+	while (i++ < sim->num_philos)
+		sem_post(sim->sim_start_sem);
+}
+
 int	run_sim_in_parent(t_simulation *sim)
 {
-	t_philo		philo[sim->num_philos];
+	pid_t		philo[sim->num_philos];
 	pthread_t	parent_monitor;
 
-	sim->philo_processes = philo;
-	if (create_philo_processes(sim, philo) != SUCCESS)
+	sim->philo_pids = philo;
+	if (create_philo_processes(sim) != SUCCESS)
 		return (pthread_join(parent_monitor, NULL), FAILURE);
-	if (philo[0].child_pid != 0)
+	if (philo[0] != 0)
 	{
 		start_philo_processes(sim);
 		if (pthread_create(&parent_monitor, NULL, &check_for_sim_end, (void *)sim) != SUCCESS)
@@ -146,3 +115,33 @@ int	run_sim_in_parent(t_simulation *sim)
 	}
 	return (SUCCESS);
 }
+
+// static void	start_philo_processes(t_simulation *sim)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	long	delay;
+
+// 	delay = sim->start_time - get_current_time_ms();
+// 	if (delay > 0)
+// 		usleep(delay * USEC_MULTIPLIER);
+	// while (i < sim->num_philos)
+	// {
+	// 	if (i++ % 2 == 0)
+	// 	{
+	// 		sem_post(sim->even_start_sem);
+	// 		//usleep(1);
+	// 	}
+	// }
+	// i = 0;
+	// usleep(10000);
+	// while (i < sim->num_philos)
+	// {
+	// 	if (i++ % 2 == 1)
+	// 	{
+	// 		sem_post(sim->odd_start_sem);
+	// 		//usleep(1);
+	// 	}
+	// }
+// }

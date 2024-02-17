@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 10:24:43 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/17 22:58:56 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@
 # define LOG_DYING "died"
 
 # define SEM_FORKS "forks_on_the_table"
-# define SEM_EVEN_START "even_start"
 # define SEM_ODD_START "odd_start"
 # define SEM_LOGGING "logging_messages"
+# define SEM_SIM_START "start_simulation"
 # define SEM_SIM_END "simulation_end"
 
 extern int g_log_fd;	// TODO: remove
@@ -53,19 +53,13 @@ typedef enum e_exit_codes
 	EXIT_CHILD_HAD_ENOUGH_MEALS
 }			t_exit_codes ;
 
-typedef struct	s_philo{		// replace struct with just pid_t if nothing else needed...
-	pid_t	child_pid;
-	bool	has_exited;
-	//int		exit_code;
-}				t_philo;
-
 typedef struct	s_simulation
 {
-	t_philo				*philo_processes;	//just a pointer to an array with the pids
+	pid_t				*philo_pids;	//just a pointer to an array with the pids
 	sem_t				*fork_sem;
-	sem_t				*even_start_sem;
 	sem_t				*odd_start_sem;
 	sem_t				*logging_sem;
+	sem_t				*sim_start_sem;
 	sem_t				*sim_end_sem;
 	int					num_philos;
 	int					philo_index;
@@ -99,7 +93,7 @@ int		eat_sleep_think_in_child(t_simulation *sim);
 // routine.c
 
 // monitoring.c
-void	update_sim_end_conditions(t_simulation *sim, t_philo *philos);
+void	update_sim_end_conditions(t_simulation *sim);
 
 // time.c
 long	get_current_time_ms(void);
