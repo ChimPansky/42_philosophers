@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 16:23:56 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 23:08:54 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 10:27:34 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,11 +65,12 @@ static void	eat_spaghetti(t_simulation *sim)
 	if (sim->philo_index % 2 == 1)
 		sem_wait(sim->odd_start_sem);
 
+	//sem_wait(sim->fork_pair_sem);
 	sem_wait(sim->fork_sem);// implement division_sem for odd/even...
 	print_log_message(sim, LOG_TAKING_FORK, true);
 	sem_wait(sim->fork_sem);
 	print_log_message(sim, LOG_TAKING_FORK, true);
-
+	//sem_post(sim->fork_pair_sem);
 	// dprintf(g_log_fd, "CHILD: P%d; TIME SINCE BOF_LAST_MEAL: %lu\n",	// TODO: Remove
 	// sim->philo_index + 1,
 	// (get_current_time_ms()  - ft_atomic_long_load(&sim->time_of_beginning_of_last_meal)));

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 22:58:56 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 10:26:58 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@
 # define LOG_DYING "died"
 
 # define SEM_FORKS "forks_on_the_table"
+# define SEM_FORK_PAIR "forkpair"
 # define SEM_ODD_START "odd_start"
 # define SEM_LOGGING "logging_messages"
 # define SEM_SIM_START "start_simulation"
@@ -57,6 +58,7 @@ typedef struct	s_simulation
 {
 	pid_t				*philo_pids;	//just a pointer to an array with the pids
 	sem_t				*fork_sem;
+	// sem_t				*fork_pair_sem;
 	sem_t				*odd_start_sem;
 	sem_t				*logging_sem;
 	sem_t				*sim_start_sem;
