@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:06:03 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 12:56:32 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:02:44 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,6 @@ int	main(int argc, char **argv)
 	if ((read_args_into_sim(&sim, argc, argv) != SUCCESS
 		|| init_forks(&sim)) != SUCCESS)
 		return (destroy_simulation(&sim), FAILURE);
-	dprintf(sim.log_fd, "start_time: %ld\n\n", sim.start_time);	// TODO remove
 	run_simulation(&sim);
 	destroy_simulation(&sim);
 	return (0);

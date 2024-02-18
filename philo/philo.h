@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 13:49:23 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 19:18:56 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,6 @@
 # define FAILURE !SUCCESS
 # define USEC_MULTIPLIER 1000
 
-// 0-100%	: duration of time to think
-// 0%		: no duration
-// 100%		: max duration
-# define THOUGHT_INTENSITY 20
-
 typedef struct	s_simulation
 {
 	int					num_philos;
@@ -56,6 +51,7 @@ typedef struct	s_philo{
 	t_ft_atomic_long	time_of_beginning_of_last_meal;
 	t_ft_atomic_int		number_of_meals_eaten;
 	t_ft_atomic_bool	sim_has_ended;
+	t_ft_atomic_bool	had_enough_meals;
 	t_simulation		*sim;
 }				t_philo;
 

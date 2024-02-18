@@ -6,13 +6,12 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 13:49:11 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:44:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_BONUS_H
 # define PHILO_BONUS_H
-
 
 # include "ph_messages.h"
 # include "stdbool.h"
@@ -23,11 +22,10 @@
 # include "lib_atomic/lib_atomic.h"
 # include <pthread.h>
 # include <bits/pthreadtypes.h>
+# include <fcntl.h>
 # include "semaphore.h"
-#include <sys/types.h>
-#include <sys/wait.h>
-
-# include "fcntl.h"	//TODO: remove
+# include <sys/types.h>
+# include <sys/wait.h>
 
 # define SUCCESS 0
 # define FAILURE !SUCCESS
@@ -43,8 +41,6 @@
 # define SEM_FORK_PAIR "fork_pair"
 # define SEM_LOGGING "logging_messages"
 # define SEM_SIM_END "simulation_end"
-
-extern int g_log_fd;	// TODO: remove
 
 typedef struct	s_simulation
 {
@@ -101,6 +97,5 @@ bool	ft_str_isnum(char *string);
 
 // error_handling.c
 int		ph_perror(int error_nr, char *error_info);
-
 
 #endif

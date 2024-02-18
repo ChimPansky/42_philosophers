@@ -68,14 +68,13 @@ test5: $(NAME)	# some1 dies
 	./$(NAME) 4 310 200 200
 
 test6: $(NAME)	# all live
-	$(NAME) 11 1000 330 500
+	./$(NAME) 11 1000 330 500
 
 kill_all:
 	pgrep -f $(NAME) | xargs kill
 
-
 valgrind:
-	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all --track-fds=all ./$(NAME)
+	valgrind --trace-children=yes --track-origins=yes --leak-check=full --show-leak-kinds=all --track-fds=all ./$(NAME) 5 800 200 200 7
 
 helgrind:
 	valgrind --tool=helgrind ./$(NAME) 4 410 200 200

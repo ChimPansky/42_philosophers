@@ -6,14 +6,11 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:22:53 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 12:25:09 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:45:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
-#include "ph_messages.h"
-#include <stdlib.h>
-
 
 static void	destroy_semaphores(t_simulation *sim)
 {
@@ -39,7 +36,8 @@ void	destroy_ft_atomics(t_simulation *sim)
 	if (ft_atomic_bool_destroy(&sim->philo_had_enough) != SUCCESS)
 		ph_perror(ERRNO_MUTEX_DESTROY, "destroy_simulation: philo_had_enough");
 	if (ft_atomic_bool_destroy(&sim->all_had_enough_meals) != SUCCESS)
-		ph_perror(ERRNO_MUTEX_DESTROY, "destroy_simulation: all_had_enough_meals");
+		ph_perror(ERRNO_MUTEX_DESTROY,
+			"destroy_simulation: all_had_enough_meals");
 }
 
 void	destroy_sim(t_simulation *sim)
@@ -83,17 +81,16 @@ static int	init_sim(t_simulation *sim)
 	if (init_semaphores(sim) != SUCCESS)
 		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation"), FAILURE);
 	if (init_ft_atomics(sim) != SUCCESS)
-		return (destroy_semaphores(sim), ph_perror(ERRNO_MUTEX_CREATE, "init_simulation"), FAILURE);
-	sim->start_time = get_current_time_usec() + 100000 + (sim->num_philos * 1000);
+		return (destroy_semaphores(sim),
+			ph_perror(ERRNO_MUTEX_CREATE, "init_simulation"), FAILURE);
+	sim->start_time = get_current_time_usec()
+		+ 100000 + (sim->num_philos * 1000);
 	return (SUCCESS);
 }
 
-int g_log_fd;	// TODO: remove
 int	main(int argc, char **argv)
 {
 	t_simulation	sim;
-
-	g_log_fd = open("debug.txt", O_CREAT | O_TRUNC | O_WRONLY, 0644); // TODO: REMOVE
 
 	if (read_args_into_sim(&sim, argc, argv) == FAILURE)
 		return (FAILURE);

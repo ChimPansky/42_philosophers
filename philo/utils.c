@@ -87,7 +87,9 @@ static size_t	ft_strlen(const char *s)
 
 void	ft_putstr_fd(char *s, int fd)
 {
+	int	bytes_written;
 	if (!s)
 		return ;
-	write(fd, s, ft_strlen(s));
+	bytes_written = write(fd, s, ft_strlen(s));
+	(void)bytes_written;
 }

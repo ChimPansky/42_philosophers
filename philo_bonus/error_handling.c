@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:39:06 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/16 11:20:11 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 18:37:54 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,9 @@
 // 	else
 // 		return (ERRMSG_UNKNOWN);
 // }
-
-
-
 int	ph_perror(int error_nr, char *error_info)
 {
-	char	error_messages[][ERRMSG_MAX_LEN] = {
+	const char	error_messages[][ERRMSG_MAX_LEN] = {
 		ERRMSG_MALLOC,
 		ERRMSG_PTHREAD,
 		ERRMSG_MUTEX_CREATE,
@@ -53,14 +50,13 @@ int	ph_perror(int error_nr, char *error_info)
 		ERRMSG_FORK,
 		ERRMSG_UNKNOWN
 	};
+
 	ft_putstr_fd("Error: ", STDERR_FILENO);
 	if (error_info)
 	{
 		ft_putstr_fd(error_info, STDERR_FILENO);
 		ft_putstr_fd(": ", STDERR_FILENO);
 	}
-
-	ft_putstr_fd(error_messages[error_nr], STDERR_FILENO);
-	ft_putstr_fd("\n", STDERR_FILENO);
-	return (error_nr);
+	ft_putstr_fd((char *)error_messages[error_nr], STDERR_FILENO);
+	return (ft_putstr_fd("\n", STDERR_FILENO), error_nr);
 }
