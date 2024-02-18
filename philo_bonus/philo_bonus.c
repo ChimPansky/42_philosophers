@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 12:22:53 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 10:26:40 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 12:25:09 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,12 @@ static void	destroy_semaphores(t_simulation *sim)
 	if (sem_close(sim->fork_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_FORKS);
 	sem_unlink(SEM_FORKS);
-	// if (sem_close(sim->fork_pair_sem) == -1)
-	// 	ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_FORK_PAIR);
-	// sem_unlink(SEM_FORKS);
-	// if (sem_close(sim->even_start_sem) == -1)
-	// 	ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_EVEN_START);
-	// sem_unlink(SEM_EVEN_START);
-	if (sem_close(sim->odd_start_sem) == -1)
-		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_ODD_START);
-	sem_unlink(SEM_ODD_START);
+	if (sem_close(sim->fork_pair_sem) == -1)
+		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_FORK_PAIR);
+	sem_unlink(SEM_FORK_PAIR);
 	if (sem_close(sim->logging_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_LOGGING);
 	sem_unlink(SEM_LOGGING);
-	if (sem_close(sim->sim_start_sem) == -1)
-		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_SIM_START);
-	sem_unlink(SEM_SIM_START);
 	if (sem_close(sim->sim_end_sem) == -1)
 		ph_perror(ERRNO_SEM_DESTROY, "destroy_simulation: "SEM_SIM_END);
 	sem_unlink(SEM_SIM_END);
@@ -60,19 +51,14 @@ void	destroy_sim(t_simulation *sim)
 static int	init_semaphores(t_simulation *sim)
 {
 	sem_unlink(SEM_FORKS);
-	//sem_unlink(SEM_FORK_PAIR);
+	sem_unlink(SEM_FORK_PAIR);
 	sem_unlink(SEM_LOGGING);
-	sem_unlink(SEM_ODD_START);
-	sem_unlink(SEM_SIM_START);
 	sem_unlink(SEM_SIM_END);
 	sim->fork_sem = sem_open(SEM_FORKS, O_CREAT, 0644, sim->num_philos);
-	//sim->fork_pair_sem = sem_open(SEM_FORK_PAIR, O_CREAT, 0644, 1);
-	// sim->even_start_sem = sem_open(SEM_EVEN_START, O_CREAT, 0644, sim->num_philos / 2);
-	sim->odd_start_sem = sem_open(SEM_ODD_START, O_CREAT, 0644, 0);
+	sim->fork_pair_sem = sem_open(SEM_FORK_PAIR, O_CREAT, 0644, 1);
 	sim->logging_sem = sem_open(SEM_LOGGING, O_CREAT, 0644, 1);
-	sim->sim_start_sem = sem_open(SEM_SIM_START, O_CREAT, 0644, 0);
 	sim->sim_end_sem = sem_open(SEM_SIM_END, O_CREAT, 0644, 0);
-	if (sim->fork_sem == SEM_FAILED || sim->odd_start_sem == SEM_FAILED
+	if (sim->fork_sem == SEM_FAILED || sim->fork_pair_sem == SEM_FAILED
 		|| sim->logging_sem == SEM_FAILED || sim->sim_end_sem == SEM_FAILED)
 		return (FAILURE);
 	return (SUCCESS);
@@ -90,17 +76,15 @@ static int	init_ft_atomics(t_simulation *sim)
 	return (SUCCESS);
 }
 
-static int	init_sim(t_simulation *sim)		// TODO: mb split up into init sems and init atomic...
+static int	init_sim(t_simulation *sim)
 {
-	// need to allocate for sems?
 	sim->philo_index = 0;
 	sim->number_of_meals_eaten = 0;
 	if (init_semaphores(sim) != SUCCESS)
 		return (ph_perror(ERRNO_SEM_OPEN, "init_simulation"), FAILURE);
 	if (init_ft_atomics(sim) != SUCCESS)
 		return (destroy_semaphores(sim), ph_perror(ERRNO_MUTEX_CREATE, "init_simulation"), FAILURE);
-
-	sim->start_time = get_current_time_ms();
+	sim->start_time = get_current_time_usec() + 100000 + (sim->num_philos * 1000);
 	return (SUCCESS);
 }
 

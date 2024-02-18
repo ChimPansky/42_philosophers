@@ -3,8 +3,8 @@ include colors.mk
 NAME = philo_bonus
 CC = cc	# TODO: change this to cc
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
-#CFLAGS += -g -Og -fsanitize=thread
-CFLAGS += -g -Og -fsanitize=address,undefined,leak
+CFLAGS += -g -Og #-fsanitize=thread
+#CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LFLAGS = -L$(LIB_ATOMIC_DIR) -l_atomic
 LIB_ATOMIC_DIR = lib_atomic
 LIB_ATOMIC = $(LIB_ATOMIC_DIR)/lib_atomic.a
@@ -66,6 +66,9 @@ test4: $(NAME)	# all live
 
 test5: $(NAME)	# some1 dies
 	./$(NAME) 4 310 200 200
+
+test6: $(NAME)	# all live
+	$(NAME) 11 1000 330 500
 
 kill_all:
 	pgrep -f $(NAME) | xargs kill

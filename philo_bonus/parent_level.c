@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 10:44:34 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 23:13:11 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 12:47:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ static int	create_philo_processes(t_simulation *sim)
 		{
 			dprintf(g_log_fd, "CHILD NO %d: STARTING EAT/SLEEP/THINK\n", i);
 			eat_sleep_think_in_child(sim);
-			break ;
 		}
+		//usleep(50); //TODO
 		sim->philo_index++;
 		i++;
 	}
@@ -87,14 +87,16 @@ void	wait_philo_processes(t_simulation *sim)
 	}
 	sem_post(sim->sim_end_sem);
 }
-
-static void	start_philo_processes(t_simulation *sim)
+void	init_philo_processes(pid_t *pids, int num_philos)
 {
 	int	i;
 
 	i = 0;
-	while (i++ < sim->num_philos)
-		sem_post(sim->sim_start_sem);
+	while (i < num_philos)
+	{
+		pids[i] = 0;
+		i++;
+	}
 }
 
 int	run_sim_in_parent(t_simulation *sim)
@@ -102,17 +104,14 @@ int	run_sim_in_parent(t_simulation *sim)
 	pid_t		philo[sim->num_philos];
 	pthread_t	parent_monitor;
 
+	init_philo_processes(philo, sim->num_philos);
 	sim->philo_pids = philo;
 	if (create_philo_processes(sim) != SUCCESS)
 		return (pthread_join(parent_monitor, NULL), FAILURE);
-	if (philo[0] != 0)
-	{
-		start_philo_processes(sim);
-		if (pthread_create(&parent_monitor, NULL, &check_for_sim_end, (void *)sim) != SUCCESS)
-			return (ph_perror(ERRNO_PTHREAD, "run_sim_in_parent: create monitor"));
-		wait_philo_processes(sim);
-		pthread_join(parent_monitor, NULL);
-	}
+	if (pthread_create(&parent_monitor, NULL, &check_for_sim_end, (void *)sim) != SUCCESS)
+		return (ph_perror(ERRNO_PTHREAD, "run_sim_in_parent: create monitor"));
+	wait_philo_processes(sim);
+	pthread_join(parent_monitor, NULL);
 	return (SUCCESS);
 }
 

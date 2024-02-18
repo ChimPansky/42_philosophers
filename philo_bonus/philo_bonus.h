@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 10:26:58 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 12:43:49 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,28 +40,18 @@
 # define LOG_DYING "died"
 
 # define SEM_FORKS "forks_on_the_table"
-# define SEM_FORK_PAIR "forkpair"
-# define SEM_ODD_START "odd_start"
+# define SEM_FORK_PAIR "fork_pair"
 # define SEM_LOGGING "logging_messages"
-# define SEM_SIM_START "start_simulation"
 # define SEM_SIM_END "simulation_end"
 
 extern int g_log_fd;	// TODO: remove
-
-typedef enum e_exit_codes
-{
-	EXIT_CHILD_DIED,
-	EXIT_CHILD_HAD_ENOUGH_MEALS
-}			t_exit_codes ;
 
 typedef struct	s_simulation
 {
 	pid_t				*philo_pids;	//just a pointer to an array with the pids
 	sem_t				*fork_sem;
-	// sem_t				*fork_pair_sem;
-	sem_t				*odd_start_sem;
+	sem_t				*fork_pair_sem;
 	sem_t				*logging_sem;
-	sem_t				*sim_start_sem;
 	sem_t				*sim_end_sem;
 	int					num_philos;
 	int					philo_index;
@@ -70,6 +60,7 @@ typedef struct	s_simulation
 	long				time_to_sleep;
 	int					number_of_times_each_philosopher_must_eat;
 	long				start_time;
+	long				time_sync;
 	t_ft_atomic_long	time_of_beginning_of_last_meal;
 	t_ft_atomic_bool	philo_had_enough;
 	t_ft_atomic_bool	all_had_enough_meals;
@@ -90,7 +81,7 @@ bool	simulation_end(t_simulation *sim);
 
 // child_level.c
 bool	print_log_message(t_simulation *sim, char *log_event, bool unlock);
-int		eat_sleep_think_in_child(t_simulation *sim);
+void	eat_sleep_think_in_child(t_simulation *sim);
 
 // routine.c
 
@@ -99,6 +90,7 @@ void	update_sim_end_conditions(t_simulation *sim);
 
 // time.c
 long	get_current_time_ms(void);
+long	get_current_time_usec(void);
 long	get_current_sim_time(t_simulation *sim);
 
 // utils.c
