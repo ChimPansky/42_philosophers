@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/14 18:03:13 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/18 13:49:23 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,7 @@ int		read_args_into_sim(t_simulation *sim, int argc, char **argv);
 
 // sim.c
 int		run_simulation(t_simulation *sim);
-bool	print_log_message(t_simulation *sim, char *log_event,
-		long timestamp, int philo_nr);
+bool	print_log_message(t_simulation *sim, char *log_event, int philo_nr);
 bool	simulation_end(t_simulation *sim);
 
 // routine.c
@@ -79,6 +78,7 @@ void	update_sim_end_conditions(t_simulation *sim, t_philo *philos);
 
 // time.c
 long	get_current_time_ms(void);
+long	get_current_time_usec(void);
 long	get_current_sim_time(t_simulation *sim);
 
 // utils.c

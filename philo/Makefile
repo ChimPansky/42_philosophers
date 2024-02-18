@@ -3,8 +3,8 @@ include colors.mk
 NAME = philo
 CC = clang	# TODO: change this to cc
 CFLAGS = -Wall -Werror -Wextra #-Wpedantic
-CFLAGS += -g -Og -fsanitize=thread #-fsanitize=address,undefined,leak
-#CFLAGS += -g -Og -fsanitize=address,undefined,leak
+#CFLAGS += -g -Og #-fsanitize=thread #-fsanitize=address,undefined,leak
+CFLAGS += -g -Og -fsanitize=address,undefined,leak
 LFLAGS = -L$(LIB_ATOMIC_DIR) -l_atomic
 LIB_ATOMIC_DIR = lib_atomic
 LIB_ATOMIC = $(LIB_ATOMIC_DIR)/lib_atomic.a
