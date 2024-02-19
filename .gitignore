@@ -17,7 +17,7 @@ LazyPhilosophersTester/
 *.o
 *.a
 *.out
-philo
+
 
 
 # generated

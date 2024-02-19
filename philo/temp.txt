@@ -1,0 +1,177 @@
+0 P2 has taken a fork
+0 P2 has taken a fork
+0 P5 has taken a fork
+0 P2 is eating
+0 P3 has taken a fork
+0 P5 has taken a fork
+0 P5 is eating
+201 P3 has taken a fork
+201 P5 is sleeping
+201 P2 is sleeping
+201 P3 is eating
+201 P1 has taken a fork
+201 P1 has taken a fork
+201 P1 is eating
+401 P5 is thinking
+401 P2 is thinking
+401 P4 has taken a fork
+401 P3 is sleeping
+401 P4 has taken a fork
+401 P4 is eating
+401 P1 is sleeping
+401 P2 has taken a fork
+401 P5 has taken a fork
+401 P2 has taken a fork
+401 P2 is eating
+601 P3 is thinking
+601 P5 has taken a fork
+601 P1 is thinking
+601 P5 is eating
+601 P4 is sleeping
+601 P3 has taken a fork
+601 P3 has taken a fork
+601 P3 is eating
+601 P2 is sleeping
+601 P1 has taken a fork
+801 P4 is thinking
+801 P1 has taken a fork
+801 P5 is sleeping
+801 P1 is eating
+801 P2 is thinking
+801 P4 has taken a fork
+801 P3 is sleeping
+801 P4 has taken a fork
+801 P4 is eating
+1001 P5 is thinking
+1001 P2 has taken a fork
+1001 P1 is sleeping
+1001 P2 has taken a fork
+1001 P5 has taken a fork
+1001 P3 is thinking
+1001 P4 is sleeping
+1001 P5 has taken a fork
+1001 P3 has taken a fork
+1001 P2 is eating
+1001 P5 is eating
+1201 P4 is thinking
+1202 P1 is thinking
+1202 P2 is sleeping
+1202 P3 has taken a fork
+1202 P5 is sleeping
+1202 P1 has taken a fork
+1202 P1 has taken a fork
+1202 P3 is eating
+1202 P1 is eating
+1402 P2 is thinking
+1402 P5 is thinking
+1402 P4 has taken a fork
+1402 P2 has taken a fork
+1402 P4 has taken a fork
+1402 P2 has taken a fork
+1402 P1 is sleeping
+1402 P2 is eating
+1402 P3 is sleeping
+1402 P5 has taken a fork
+1402 P4 is eating
+1602 P1 is thinking
+1602 P3 is thinking
+1602 P5 has taken a fork
+1602 P4 is sleeping
+1602 P2 is sleeping
+1602 P1 has taken a fork
+1602 P5 is eating
+1602 P3 has taken a fork
+1602 P3 has taken a fork
+1602 P3 is eating
+1802 P4 is thinking
+1802 P2 is thinking
+1802 P1 has taken a fork
+1802 P4 has taken a fork
+1802 P5 is sleeping
+1802 P1 is eating
+1802 P3 is sleeping
+1802 P4 has taken a fork
+1802 P4 is eating
+2002 P5 is thinking
+2002 P3 is thinking
+2002 P2 has taken a fork
+2002 P4 is sleeping
+2002 P2 has taken a fork
+2003 P1 is sleeping
+2003 P5 has taken a fork
+2003 P3 has taken a fork
+2003 P2 is eating
+2003 P5 has taken a fork
+2003 P5 is eating
+2203 P4 is thinking
+2203 P1 is thinking
+2203 P3 has taken a fork
+2203 P1 has taken a fork
+2203 P3 is eating
+2203 P1 has taken a fork
+2203 P2 is sleeping
+2203 P5 is sleeping
+2203 P1 is eating
+2403 P2 is thinking
+2403 P4 has taken a fork
+2403 P2 has taken a fork
+2403 P5 is thinking
+2403 P4 has taken a fork
+2403 P2 has taken a fork
+2403 P3 is sleeping
+2403 P4 is eating
+2403 P5 has taken a fork
+2403 P2 is eating
+2403 P1 is sleeping
+2603 P3 is thinking
+2603 P1 is thinking
+2603 P5 has taken a fork
+2603 P4 is sleeping
+2603 P2 is sleeping
+2603 P3 has taken a fork
+2603 P1 has taken a fork
+2603 P5 is eating
+2603 P3 has taken a fork
+2603 P3 is eating
+2803 P4 is thinking
+2803 P2 is thinking
+2803 P4 has taken a fork
+2803 P1 has taken a fork
+2803 P5 is sleeping
+2803 P3 is sleeping
+2803 P4 has taken a fork
+2803 P1 is eating
+2803 P4 is eating
+3003 P5 is thinking
+3003 P3 is thinking
+3004 P4 is sleeping
+3004 P2 has taken a fork
+3004 P1 is sleeping
+3004 P3 has taken a fork
+3004 P5 has taken a fork
+3004 P2 has taken a fork
+3004 P5 has taken a fork
+3004 P2 is eating
+3004 P5 is eating
+3204 P4 is thinking
+3204 P1 is thinking
+3204 P5 is sleeping
+3204 P3 has taken a fork
+3204 P2 is sleeping
+3204 P1 has taken a fork
+3204 P3 is eating
+3204 P1 has taken a fork
+3204 P1 is eating
+3404 P5 is thinking
+3404 P2 is thinking
+3404 P2 has taken a fork
+3404 P1 is sleeping
+3404 P5 has taken a fork
+3404 P3 is sleeping
+3404 P4 has taken a fork
+3404 P2 has taken a fork
+3404 P5 has taken a fork
+3404 P2 is eating
+3404 P5 is eating
+PHILO DIED
+3603 P4 died
