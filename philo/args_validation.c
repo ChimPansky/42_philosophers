@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:35:00 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/14 17:04:05 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:45:05 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,11 @@ int	read_args_into_sim(t_simulation *sim, int argc, char **argv)
 		sim->number_of_times_each_philosopher_must_eat = ft_atoi(argv[5]);
 	else
 		sim->number_of_times_each_philosopher_must_eat = -1;
-	return (validate_args(sim));
+	if (validate_args(sim) != SUCCESS)
+		return (FAILURE);
+	sim->time_to_think = (sim->time_to_die - sim->time_to_eat
+		- sim->time_to_sleep) * 0.9;
+	if (sim->time_to_think < 10)
+		sim->time_to_think = 0;
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:06:03 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 19:02:44 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:51:02 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,5 +77,5 @@ int	main(int argc, char **argv)
 		return (destroy_simulation(&sim), FAILURE);
 	run_simulation(&sim);
 	destroy_simulation(&sim);
-	return (0);
+	return (SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 19:18:56 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/19 12:34:23 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct	s_simulation
 	long				time_to_die;
 	long				time_to_eat;
 	long				time_to_sleep;
+	long				time_to_think;
 	int					number_of_times_each_philosopher_must_eat;
 	t_ft_atomic_bool	all_are_alive;
 	t_ft_atomic_bool	all_had_enough_meals;

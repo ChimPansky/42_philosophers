@@ -3,7 +3,7 @@
 #*.pdf
 *.ods
 *.ods#
-#*.txt
+*.txt
 *.png
 test.c
 

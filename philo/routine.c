@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:24:16 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 19:24:59 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:24:07 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,15 @@ int	ft_min(int val1, int val2)
 
 static bool	think_thoroughly(t_philo *philo)
 {
-	if (!print_log_message(philo->sim, LOG_THINKING, philo->index + 1))
+	if (!print_log_message(philo->sim, LOG_THINKING, philo->index))
 		return (false);
-	usleep(50);
+	usleep(philo->sim->time_to_think * USEC_MULTIPLIER);
 	return (true);
 }
 // the current_time is sometimes not calculated properly.
 static bool	sleep_well(t_philo *philo)
 {
-	if (!print_log_message(philo->sim, LOG_SLEEPING, philo->index + 1))
+	if (!print_log_message(philo->sim, LOG_SLEEPING, philo->index))
 		return (false);
 	usleep(philo->sim->time_to_sleep * USEC_MULTIPLIER);
 	return (true);
@@ -38,7 +38,7 @@ static bool	take_fork(t_philo *philo, pthread_mutex_t *mx_fork, int f_ind)
 {
 	pthread_mutex_lock(mx_fork);
 	dprintf(philo->sim->log_fd, "P%d ABOUT TO TAKE FORK %d\n", philo->index + 1, f_ind + 1);
-	return (print_log_message(philo->sim, LOG_TAKING_FORK, philo->index + 1));
+	return (print_log_message(philo->sim, LOG_TAKING_FORK, philo->index));
 }
 
 static bool	eat_spaghetti(t_philo *philo)
@@ -82,15 +82,11 @@ static bool	eat_spaghetti(t_philo *philo)
 			return (dprintf(philo->sim->log_fd,"P%d couldnt take second fork\n", philo->index + 1), false);
 	}
 
-	b_o_last_meal = ft_atomic_long_load(&philo->time_of_beginning_of_last_meal);
-	dprintf(philo->sim->log_fd,"%ld TIME since last meal\n", get_current_sim_time(
-		philo->sim) - b_o_last_meal);
-	//philo->time_of_beginning_of_last_meal = get_current_sim_time(
-	//	philo->sim);
+
 	ft_atomic_long_store(&philo->time_of_beginning_of_last_meal,
 		get_current_time_usec());
-	if (!print_log_message(philo->sim, LOG_EAT, philo->index + 1))
-		return (dprintf(philo->sim->log_fd,"P%d couldnt print eat msg\n", philo->index + 1), false);
+	if (!print_log_message(philo->sim, LOG_EAT, philo->index))
+		return (false);
 	usleep(philo->sim->time_to_eat * USEC_MULTIPLIER);
 	ft_atomic_int_fetch_add(&philo->number_of_meals_eaten, 1);
 	if (philo->sim->number_of_times_each_philosopher_must_eat != -1
@@ -98,10 +94,6 @@ static bool	eat_spaghetti(t_philo *philo)
 		>= philo->sim->number_of_times_each_philosopher_must_eat)
 		ft_atomic_bool_store(&philo->had_enough_meals, true);
 	pthread_mutex_unlock(right_fork);
-	dprintf(philo->sim->log_fd,"P%d PUT DOWN FORK %d\n", philo->index + 1, r_ind + 1);
-	pthread_mutex_unlock(left_fork);
-	dprintf(philo->sim->log_fd,"P%d PUT DOWN FORK %d\n", philo->index + 1, l_ind + 1);
-	//update_meal_count(philo);
 	return (true);
 }
 
@@ -120,10 +112,7 @@ void	*routine_eat_sleep_think(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	// dprintf(philo->sim->log_fd,"P%d CURRENT_TIME BEFORE SYNC: %lu\n", philo->index + 1, get_current_time_usec());
-	// dprintf(philo->sim->log_fd,"P%d SIM_START_TIME          : %lu\n", philo->index + 1, philo->sim->start_time);
 	synchronise_start_time(philo);
-	// dprintf(philo->sim->log_fd,"P%d CURRENT_TIME AFTER SYNC : %lu\n", philo->index + 1, get_current_time_usec());
 	ft_atomic_long_store(&philo->time_of_beginning_of_last_meal,
 		philo->sim->start_time);
 	while(true && philo->sim->number_of_times_each_philosopher_must_eat != 0)

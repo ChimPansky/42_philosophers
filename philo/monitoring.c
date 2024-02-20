@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 14:53:21 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 19:18:39 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/19 13:19:56 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,7 @@ bool	check_if_philo_is_alive(t_philo philo, t_simulation *sim)
 		ft_atomic_long_load(&philo.time_of_beginning_of_last_meal))
 		>= philo.sim->time_to_die * USEC_MULTIPLIER)
 	{
-		print_log_message(sim,
-			LOG_DYING, philo.index + 1);
+		print_log_message(sim, LOG_DYING, philo.index);
 		return (false);
 	}
 	return (true);
@@ -61,23 +60,16 @@ bool	have_enough_meals_been_eaten(t_philo *philos, int num_philos,
 		int num_meals)
 {
 	int		i;
-	int		num_philos_w_enough_meals;
 
 	if (num_meals == -1)
 		return (false);
 	if (num_meals == 0)
 		return (true);
 	i = 0;
-	num_philos_w_enough_meals = 0;
 	while (i < num_philos)
-	{
-		if (ft_atomic_bool_load(&philos[i].had_enough_meals) == true)
-			num_philos_w_enough_meals++;
-		i++;
-	}
-	if (num_philos_w_enough_meals == num_philos)
-		return (true);
-	return (false);
+		if (ft_atomic_bool_load(&philos[i++].had_enough_meals) == false)
+			return (false);
+	return (true);
 }
 
 void	update_sim_end_conditions(t_simulation *sim, t_philo *philos)
