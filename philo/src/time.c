@@ -6,14 +6,14 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/13 12:30:31 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/18 12:20:31 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:13:46 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
+#include "philo.h"
 #include <bits/types/struct_timeval.h>
 
-long	get_current_time_ms()
+long	get_current_time_ms(void)
 {
 	struct timeval	cur_time;
 	long			cur_time_ms;
@@ -23,7 +23,7 @@ long	get_current_time_ms()
 	return (cur_time_ms);
 }
 
-long	get_current_time_usec()
+long	get_current_time_usec(void)
 {
 	struct timeval	cur_time;
 	long			cur_time_usec;

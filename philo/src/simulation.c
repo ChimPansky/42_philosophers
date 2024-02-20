@@ -10,34 +10,21 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lib_atomic/lib_atomic.h"
-#include "ph_messages.h"
 #include "philo.h"
-#include <stdbool.h>
 
 bool	print_log_message(t_simulation *sim, char *log_event, int philo_ind)
 {
 	pthread_mutex_lock(&sim->logging_guard);
-	if (simulation_end(sim))	// TODO: check why thinking and sleeping is printed after some1 dies
-	{
-		pthread_mutex_unlock(&sim->logging_guard);
-		return (false);
-	}
+	usleep(1);
+	if (simulation_end(sim))
+		return (pthread_mutex_unlock(&sim->logging_guard), false);
 	printf("%ld P%d %s\n",
 		get_current_sim_time(sim), philo_ind + 1, log_event);
 	pthread_mutex_unlock(&sim->logging_guard);
 	return (true);
 }
 
-bool	simulation_end(t_simulation *sim)
-{
-	if (!ft_atomic_bool_load(&sim->all_are_alive)
-		|| ft_atomic_bool_load(&sim->all_had_enough_meals))
-		return (true);
-	return (false);
-}
-
-static void join_and_destroy_philos(t_philo *philos, int num_philos)
+static void	join_and_destroy_philos(t_philo *philos, int num_philos)
 {
 	int	i;
 
@@ -99,7 +86,9 @@ static int	create_threads(t_philo **philos, int num_philos)
 int	run_simulation(t_simulation *sim)
 {
 	t_philo			*philos;
+	int				i;
 
+	i = 0;
 	if (init_philos(&philos, sim->num_philos, sim) != SUCCESS)
 		return (FAILURE);
 	if (create_threads(&philos, sim->num_philos) != SUCCESS)
@@ -110,11 +99,7 @@ int	run_simulation(t_simulation *sim)
 		usleep(1);
 		update_sim_end_conditions(sim, philos);
 	}
-	int i = 0;
 	while (i < sim->num_philos)
-	{
-		ft_atomic_bool_store(&philos[i].sim_has_ended, true);
-		i++;
-	}
+		ft_atomic_bool_store(&philos[i++].sim_has_ended, true);
 	return (join_and_destroy_philos(philos, sim->num_philos), SUCCESS);
 }

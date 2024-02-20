@@ -6,7 +6,7 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/16 17:57:50 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:26:53 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,6 @@
 # define ERRMSG_FORK "Could not create child process"
 
 # define ERRMSG_UNKNOWN "Unknown Error"
-
-# define SUCCESS 0
-# define FAILURE !SUCCESS
 
 typedef enum e_errors
 {

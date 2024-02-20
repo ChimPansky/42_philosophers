@@ -6,14 +6,12 @@
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/11 23:05:55 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/14 16:45:55 by tkasbari         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:17:58 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PH_MESSAGES_H
 # define PH_MESSAGES_H
-
-#include <stdbool.h>
 
 # define ERRMSG_MAX_LEN 50
 
@@ -33,9 +31,6 @@
 # define LOG_SLEEPING "is sleeping"
 # define LOG_THINKING "is thinking"
 # define LOG_DYING "died"
-
-# define SUCCESS 0
-# define FAILURE !SUCCESS
 
 typedef enum e_errors
 {

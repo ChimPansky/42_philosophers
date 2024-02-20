@@ -5,22 +5,12 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: tkasbari <thomas.kasbarian@gmail.com>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/15 09:22:41 by tkasbari          #+#    #+#             */
-/*   Updated: 2024/02/17 07:56:16 by tkasbari         ###   ########.fr       */
+/*   Created: 2024/02/20 12:10:49 by tkasbari          #+#    #+#             */
+/*   Updated: 2024/02/20 12:19:30 by tkasbari         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "philo_bonus.h"
-
-// checks if str can be converted to int and if yes,
-// stores the conversion in target
-// returns SUCCESS/FAILURE
-// int	convert_str_to_int(char *str_to_convert, int *target)
-// {
-
-// 	return (SUCCESS);
-// }
-#include <limits.h>
+#include "philo.h"
 
 long	ft_atol(char *string)
 {
@@ -47,7 +37,7 @@ long	ft_atol(char *string)
 	return ((long)result * sign_multiplier);
 }
 
-int		ft_atoi(char *string)
+int	ft_atoi(char *string)
 {
 	unsigned int	result;
 	int				sign_multiplier;
@@ -101,7 +91,6 @@ void	ft_putstr_fd(char *s, int fd)
 {
 	int	bytes_written;
 
-	bytes_written = 0;
 	if (!s)
 		return ;
 	bytes_written = write(fd, s, ft_strlen(s));
